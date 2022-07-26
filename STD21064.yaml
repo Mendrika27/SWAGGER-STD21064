@@ -4,7 +4,9 @@ info:
   description: 'Global description of my API'
   version: 1.0.0
 servers:
- - url: https://STD21064.com
+ # Added by API Auto Mocking Plugin
+ - description: SwaggerHub API Auto Mocking
+   url: https://virtserver.swaggerhub.com/HEIMENDRIKAHARIZO/STD21064_API/1.0.0
 tags: 
  - name: Students
    
@@ -49,7 +51,98 @@ paths:
               schema:
                 $ref: '#/components/schemas/Student'
         400:
-          description: Bad request  
+          description: Invalid student
+        404:
+          description: Student not found  
+ /student/{id}:
+    get: 
+      tags: 
+        - Students
+      description: Get a specified student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        400:
+          description: Invalid student
+        404:
+          description: Student not found
+    put:
+      tags:
+        - Students
+      summary: Update an existing student
+      operationId: UpdateStudent
+      parameters:
+        - name: id
+          in: path
+          description: name that need to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update an existing Student
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses:
+        400:
+          description: Bad Request
+    patch:
+      tags:
+        - Students
+      description: Update a Student
+      parameters:
+        - name: id
+          in: path
+          description: name that need to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: |
+          Possible updates on:
+          * name: change
+          * addresse : change
+          * birth_date : change
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses:
+        400:
+          description: Invalid student
+        404:
+          description: Student not found
+    delete:
+      tags:
+        - Students
+      summary: Delete student
+      operationId: deleteStudent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Return the ID of deleted student
+        400:
+          description: Invalid student
+        404:
+          description: Student not found
  /courses:
     get: 
       tags:
@@ -59,7 +152,7 @@ paths:
       description: List courses
       responses:
         200:
-          description: List of courses
+          description: OK
           content: 
             application/json:
               schema:
@@ -82,8 +175,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateCourses'
       responses:
-        200:
-          description: cours
+        201:
+          description: Created
           content: 
             appliction/json:
               schema:
@@ -107,7 +200,9 @@ paths:
                 schema:
                   $ref: '#/components/schemas/Courses'
         400:
-          description: Bad request
+          description: Invalid student
+        404:
+          description: Student not found
 components:
   schemas:
     CreateStudent:
