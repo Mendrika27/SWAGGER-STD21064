@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: STD21064 API
+  title: STD21064-TD2
   description: Cinema management.
   version: 1.0.0
 servers:
@@ -26,47 +26,6 @@ paths:
                 $ref: '#/components/schemas/Room'
         404: 
           description: Not_found
-    post:
-      tags:
-        - Rooms
-      description: Create a room
-      responses:
-        201:
-          description: Created 
-          content:
-            application/json:
-                schema:
-                  $ref: '#/components/schemas/CreateRoom'
-        405:
-          description: Invalid request
-    patch:
-      tags:
-        - Rooms
-      description: Update a room
-      requestBody:
-        description: |
-          Possible updates on:
-          * Id: change
-          * Capacity: change
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/Room'
-      responses:
-        400:
-          description: Bad_request
-    delete:
-      tags:
-        - Rooms
-      summary: Delete Room
-      operationId: deleteRoom
-      responses:
-        200:
-          description: Return the ID of deleted room
-        400:
-          description: Invalid room
-        404:
-          description: Room not found
   /rooms/{id}:
     get:
       tags:
@@ -84,66 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
-    post:
-      tags:
-        - Rooms
-      description: Create a room
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        201:
-          description: Created 
-          content:
-            application/json:
-                schema:
-                  $ref: '#/components/schemas/CreateRoom'
-        405:
-          description: Invalid request
-    patch:
-      tags:
-        - Rooms
-      description: Update a room
-      parameters:
-        - name: id
-          in: path
-          description: name that need to update
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: |
-          Possible updates on:
-          * Id: change
-          * Capacity: change
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/Room'
-      responses:
-        400:
-          description: Bad_request
-    delete:
-      tags:
-        - Rooms
-      summary: Delete Room
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Return the ID of deleted room
-        400:
-          description: Invalid room
-        404:
-          description: Room not found
+                $ref: '#/components/schemas/Room' 
   /films:
     get:
       tags:
@@ -416,6 +316,27 @@ paths:
           description: Invalid projection
         404:
           description: Projection not found
+  /projection/week/:
+    get:
+      tags: 
+        - Projections 
+      description: Get list of projection for a specified week
+      parameters:
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date-time
+          required: true
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                $ref: '#/components/schemas/Week'
   /category:
     get: 
       tags:
@@ -614,3 +535,13 @@ components:
       properties:
         id:
           type: integer
+    Week: 
+      type: object
+      properties:
+        weekOf:
+          type: string
+          format: date-time
+        Projection:
+          type: array
+          items:
+            $ref: '#/components/schemas/Projection'
